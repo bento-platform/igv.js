@@ -75,7 +75,7 @@ const VariantTrack = extend(TrackBase,
 
 VariantTrack.prototype.postInit = async function () {
 
-    //const header = await this.getFileHeader();   // cricital, don't remove'
+    const header = await this.getFileHeader();   // cricital, don't remove'
     if (undefined === this.visibilityWindow) {
         const fn = this.config.url instanceof File ? this.config.url.name : this.config.url;
         if (isString(fn) && fn.toLowerCase().includes("gnomad")) {
