@@ -187,7 +187,7 @@ VariantTrack.prototype.draw = function (options) {
     const featureList = options.features
 
     if (featureList) {
-        for (let variant of featureList) {
+        feature.forEach( function (variant) {
             if (variant.end < bpStart) continue;
             if (variant.start > bpEnd) break;
 
@@ -217,17 +217,11 @@ VariantTrack.prototype.draw = function (options) {
 
             ctx.fillRect(px, py, pw, vh);
 
-            console.log(variant);
-            console.log(callSets);
-            console.log(nCalls);
-
             if (nCalls > 0 && variant.calls && "COLLAPSED" !== this.displayMode) {
 
                 let callsDrawn = 0;
 
-                console.log(variant);
-                console.log(callSets);
-                for (let callSet of callSets) {
+                callSets.forEach( function (callSet) {
                     const call = variant.calls[callSet.sample_id];
                     if (call) {
                         const py = this.variantBandHeight + vGap + (callsDrawn + variant.row) * (callHeight + vGap)
@@ -258,10 +252,10 @@ VariantTrack.prototype.draw = function (options) {
 
                     }
                     callsDrawn++;
-                }
+                });
 
             }
-        }
+        });
     } else {
         console.log("No feature list");
     }
