@@ -94,6 +94,7 @@ VariantTrack.prototype.postInit = async function () {
 VariantTrack.prototype.getFileHeader = async function () {
 
     if (this.header) {
+        this.callSets = this.config.calls || [];
         return this.header;
     } else if (typeof this.featureSource.getFileHeader === "function") {
 
