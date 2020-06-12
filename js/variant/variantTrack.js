@@ -59,8 +59,6 @@ const VariantTrack = extend(TrackBase,
         this.visibilityWindow = config.visibilityWindow;
 
         this.featureSource = new FeatureSource(config, browser.genome);
-        this.callSets = this.config.calls || [];
-        console.log(this.callSets);
 
         this.noCallColor = config.noCallColor || "rgb(245, 245, 245)";
         this.nonRefColor = config.nonRefColor || "rgb(200, 200, 215)";
@@ -169,6 +167,7 @@ VariantTrack.prototype.computePixelHeight = function (features) {
 
 VariantTrack.prototype.draw = function (options) {
     const ctx = options.context
+    this.callSets = this.config.calls || [];
     const callSets = this.callSets;
     const nCalls = this.getCallsetsLength();
     const pixelWidth = options.pixelWidth
