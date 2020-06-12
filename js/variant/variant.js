@@ -305,7 +305,6 @@ function createGAVariant(json) {
     var order = 0, id;
     if (json.calls) {
         json.calls.forEach(function (call) {
-            console.log(call);
             id = call.sample_id;
             variant.calls[id] = call;
             order++;
