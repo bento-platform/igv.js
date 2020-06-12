@@ -166,7 +166,8 @@ VariantTrack.prototype.computePixelHeight = function (features) {
 };
 
 VariantTrack.prototype.draw = function (options) {
-
+    console.log('draw');
+    console.trace();
     const ctx = options.context
     const callSets = this.callSets;
     const nCalls = this.getCallsetsLength();
