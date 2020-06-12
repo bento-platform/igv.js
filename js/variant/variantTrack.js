@@ -60,6 +60,7 @@ const VariantTrack = extend(TrackBase,
 
         this.featureSource = new FeatureSource(config, browser.genome);
         this.callSets = this.config.calls || [];
+        console.log(callSets);
 
         this.noCallColor = config.noCallColor || "rgb(245, 245, 245)";
         this.nonRefColor = config.nonRefColor || "rgb(200, 200, 215)";
