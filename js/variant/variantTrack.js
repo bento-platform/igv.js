@@ -59,6 +59,7 @@ const VariantTrack = extend(TrackBase,
         this.visibilityWindow = config.visibilityWindow;
 
         this.featureSource = new FeatureSource(config, browser.genome);
+        this.callSets = this.config.calls || [];
 
         this.noCallColor = config.noCallColor || "rgb(245, 245, 245)";
         this.nonRefColor = config.nonRefColor || "rgb(200, 200, 215)";
@@ -94,7 +95,6 @@ VariantTrack.prototype.postInit = async function () {
 VariantTrack.prototype.getFileHeader = async function () {
 
     if (this.header) {
-        this.callSets = this.config.calls || [];
         return this.header;
     } else if (typeof this.featureSource.getFileHeader === "function") {
 
