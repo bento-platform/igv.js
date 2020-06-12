@@ -187,7 +187,7 @@ VariantTrack.prototype.draw = function (options) {
     const featureList = options.features
 
     if (featureList) {
-        feature.forEach( function (variant) {
+        featureList.forEach( function (variant) {
             if (variant.end < bpStart) continue;
             if (variant.start > bpEnd) break;
 
