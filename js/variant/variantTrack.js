@@ -217,14 +217,15 @@ VariantTrack.prototype.draw = function (options) {
             ctx.fillRect(px, py, pw, vh);
 
             console.log(variant);
-            console.log(callSet);
+            console.log(callSets);
+            console.log(nCalls);
 
             if (nCalls > 0 && variant.calls && "COLLAPSED" !== this.displayMode) {
 
                 let callsDrawn = 0;
 
                 console.log(variant);
-                console.log(callSet);
+                console.log(callSets);
                 for (let callSet of callSets) {
                     const call = variant.calls[callSet.sample_id];
                     if (call) {
