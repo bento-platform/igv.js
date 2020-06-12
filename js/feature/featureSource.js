@@ -73,7 +73,7 @@ class FeatureSource {
 
             config.variants.forEach(function (json) {
 
-                v = createGAVariant(json);
+                var v = createGAVariant(json);
 
                 if (!v.isRefBlock()) {
                     features.push(v);
