@@ -222,7 +222,7 @@ VariantTrack.prototype.draw = function (options) {
 
                 let callsDrawn = 0;
 
-                for(var=0; j<callSets.length; j++){
+                for(var j =0; j<callSets.length; j++){
                     const callSet = callSets[i];
                     const call = variant.calls[callSet.sample_id];
                     if (call) {
