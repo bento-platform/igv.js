@@ -271,7 +271,7 @@ class ViewPort {
         this.loading = {start: bpStart, end: bpEnd};
         this.startSpinner();
 
-        // console.log('get features');
+        console.log('get features');
         try {
             const features = await this.getFeatures(this.trackView.track, referenceFrame.chrName, bpStart, bpEnd, referenceFrame.bpPerPixel);
             let roiFeatures = [];
@@ -700,6 +700,8 @@ class ViewPort {
         if (this.tile && this.tile.containsRange(chr, start, end, bpPerPixel)) {
             return this.tile.features;
         } else if (typeof track.getFeatures === "function") {
+            console.log('track:');
+            console.log(track);
             const features = await track.getFeatures(chr, start, end, bpPerPixel, this);
             this.cachedFeatures = features;
             this.checkContentHeight();
