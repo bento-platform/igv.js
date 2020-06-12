@@ -75,7 +75,7 @@ const VariantTrack = extend(TrackBase,
 
 VariantTrack.prototype.postInit = async function () {
 
-    const header = this.config.header;   // cricital, don't remove'
+    const header = await this.getFileHeader();   // cricital, don't remove'
     if (undefined === this.visibilityWindow) {
         const fn = this.config.url instanceof File ? this.config.url.name : this.config.url;
         if (isString(fn) && fn.toLowerCase().includes("gnomad")) {
@@ -127,8 +127,8 @@ VariantTrack.prototype.getFeatures = async function (chr, bpStart, bpEnd, bpPerP
     if (this.header === undefined) {
         this.header = await this.getFileHeader();
     }
-    //return this.featureSource.getFeatures(chr, bpStart, bpEnd, bpPerPixel, this.visibilityWindow);
-    return this.config.variants;
+    return this.featureSource.getFeatures(chr, bpStart, bpEnd, bpPerPixel, this.visibilityWindow);
+
 }
 
 
