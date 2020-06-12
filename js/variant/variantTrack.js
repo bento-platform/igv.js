@@ -187,7 +187,7 @@ VariantTrack.prototype.draw = function (options) {
     const featureList = options.features
 
     if (featureList) {
-      for(i=0; i<featureList.length; i++){
+      for(var i=0; i<featureList.length; i++){
            const variant = featureList[i];
             if (variant.end < bpStart) continue;
             if (variant.start > bpEnd) break;
@@ -222,7 +222,7 @@ VariantTrack.prototype.draw = function (options) {
 
                 let callsDrawn = 0;
 
-                for(j=0; j<callSets.length; j++){
+                for(var=0; j<callSets.length; j++){
                     const callSet = callSets[i];
                     const call = variant.calls[callSet.sample_id];
                     if (call) {
