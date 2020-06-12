@@ -187,7 +187,8 @@ VariantTrack.prototype.draw = function (options) {
     const featureList = options.features
 
     if (featureList) {
-        featureList.forEach( function (variant) {
+      for(int i=0; i<featureList.length; i++){
+           const variant = featureList[i];
             if (variant.end < bpStart) continue;
             if (variant.start > bpEnd) break;
 
@@ -221,7 +222,8 @@ VariantTrack.prototype.draw = function (options) {
 
                 let callsDrawn = 0;
 
-                callSets.forEach( function (callSet) {
+                for(int j=0; j<callSets.length; j++){
+                    const callSet = callSets[i];
                     const call = variant.calls[callSet.sample_id];
                     if (call) {
                         const py = this.variantBandHeight + vGap + (callsDrawn + variant.row) * (callHeight + vGap)
@@ -252,10 +254,10 @@ VariantTrack.prototype.draw = function (options) {
 
                     }
                     callsDrawn++;
-                });
+                }
 
             }
-        });
+        }
     } else {
         console.log("No feature list");
     }
