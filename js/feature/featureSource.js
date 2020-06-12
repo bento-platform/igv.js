@@ -68,8 +68,23 @@ class FeatureSource {
             this.featureCache = new FeatureCache(features, genome);
             this.static = true;
         } else if (config.sourceType === "ga4gh") {
-            this.reader = new Ga4ghVariantReader(config, genome);
-            this.queryable = true;
+            var features = [];
+
+            config.variants.forEach(function (json) {
+
+                v = createGAVariant(json);
+
+                if (!v.isRefBlock()) {
+                    features.push(v);
+                }
+            });
+
+            packFeatures(features);
+            if (config.mappings) {
+                mapProperties(features, config.mappings)
+            }
+            this.featureCache = new FeatureCache(features, genome);
+            this.static = true;
         } else if (config.sourceType === "immvar") {
             this.reader = new ImmVarReader(config);
             this.queryable = true;

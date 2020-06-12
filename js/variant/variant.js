@@ -266,15 +266,15 @@ function createGAVariant(json) {
 
     var variant = new Variant();
 
-    variant.chr = json.referenceName;
+    variant.chr = json.chr;
     variant.start = parseInt(json.start);  // Might get overriden below
     variant.end = parseInt(json.end);      // Might get overriden below
     variant.pos = variant.start + 1;       // GA4GH is 0 based.
     variant.names = arrayToString(json.names, "; ");
     variant.referenceBases = json.referenceBases;
     variant.alternateBases = arrayToString(json.alternateBases);
-    variant.quality = json.quality;
-    variant.filter = arrayToString(json.filter);
+    //variant.quality = json.quality;
+    //variant.filter = arrayToString(json.filter);
 
 
     // Flatten GA4GH attributes array
@@ -305,7 +305,7 @@ function createGAVariant(json) {
     var order = 0, id;
     if (json.calls) {
         json.calls.forEach(function (call) {
-            id = call.callSetId;
+            id = call.sample_id;
             variant.calls[id] = call;
             order++;
 
@@ -319,4 +319,3 @@ function createGAVariant(json) {
 }
 
 export {createVCFVariant, createGAVariant};
-
