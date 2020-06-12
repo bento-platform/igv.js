@@ -166,8 +166,6 @@ VariantTrack.prototype.computePixelHeight = function (features) {
 };
 
 VariantTrack.prototype.draw = function (options) {
-    console.log('draw');
-    console.trace();
     const ctx = options.context
     const callSets = this.callSets;
     const nCalls = this.getCallsetsLength();
@@ -217,6 +215,9 @@ VariantTrack.prototype.draw = function (options) {
 
 
             ctx.fillRect(px, py, pw, vh);
+
+            console.log(variant);
+            console.log(callSet);
 
             if (nCalls > 0 && variant.calls && "COLLAPSED" !== this.displayMode) {
 
