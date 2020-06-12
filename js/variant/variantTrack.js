@@ -112,7 +112,7 @@ VariantTrack.prototype.getFileHeader = async function () {
         this.header = header;
         return header;
     } else {
-        this.callSets = [];
+        this.callSets = this.config.calls || [];
         return undefined;
     }
 
@@ -222,20 +222,22 @@ VariantTrack.prototype.draw = function (options) {
 
                 let callsDrawn = 0;
 
+                console.log(variant);
+                console.log(callSet);
                 for (let callSet of callSets) {
-                    const call = variant.calls[callSet.id];
+                    const call = variant.calls[callSet.sample_id];
                     if (call) {
                         const py = this.variantBandHeight + vGap + (callsDrawn + variant.row) * (callHeight + vGap)
                         let allVar = true;  // until proven otherwise
                         let allRef = true;
                         let noCall = false;
-                        for (let g of call.genotype) {
+                        for (let g of call.genotype_type) {
                             if('.' === g) {
                                 noCall = true;
                                 break;
                             } else {
-                                if (g !== 0) allRef = false;
-                                if (g === 0) allVar = false;
+                                if (g !== 'HOMOZYGOUS_REFERENCE') allVar = false;
+                                if (g === 'HETEROZYGOUS_REFERENCE') allRef = false;
                             }
                         }
 
