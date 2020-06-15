@@ -274,7 +274,7 @@ class ViewPort {
 
         // console.log('get features');
         try {
-            console.alert('getting features');
+            alert('getting features');
             const features = await this.getFeatures(this.trackView.track, referenceFrame.chrName, bpStart, bpEnd, referenceFrame.bpPerPixel);
             let roiFeatures = [];
             const roi = mergeArrays(this.browser.roi, this.trackView.track.roi)
