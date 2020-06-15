@@ -185,7 +185,6 @@ VariantTrack.prototype.draw = function (options) {
     }
 
     const featureList = options.features;
-    console.log(callSets);
 
     if (featureList) {
       for(var i=0; i<featureList.length; i++){
@@ -224,7 +223,7 @@ VariantTrack.prototype.draw = function (options) {
                 let callsDrawn = 0;
 
                 for(var j =0; j<callSets.length; j++){
-                    const callSet = callSets[i];
+                    const callSet = callSets[j];
                     const call = variant.calls[callSet.sample_id];
                     if (call) {
                         const py = this.variantBandHeight + vGap + (callsDrawn + variant.row) * (callHeight + vGap)
@@ -232,7 +231,6 @@ VariantTrack.prototype.draw = function (options) {
                         let allRef = true;
                         let noCall = false;
                         var type = call.genotype_type;
-                        console.log(type);
 
                         if (type != 'HOMOZYGOUS_REFERENCE') allRef = false;
                         if (type != 'HOMOZYGOUS_ALTERNATE') allVar = false;
