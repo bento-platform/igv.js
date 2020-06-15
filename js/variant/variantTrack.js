@@ -231,6 +231,7 @@ VariantTrack.prototype.draw = function (options) {
                         let allRef = true;
                         let noCall = false;
                         for (let g of call.genotype_type) {
+                          console.log(g);
                             if('.' === g) {
                                 noCall = true;
                                 break;
