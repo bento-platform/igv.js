@@ -113,7 +113,11 @@ VariantTrack.prototype.getFileHeader = async function () {
         return header;
     } else {
         this.callSets = this.config.calls || [];
-        return undefined;
+        var this.header = []
+        callSets.forEach(function (call) {
+          header.push(call.sample_id);
+        });
+        return this.header;
     }
 
 }
