@@ -230,16 +230,10 @@ VariantTrack.prototype.draw = function (options) {
                         let allVar = true;  // until proven otherwise
                         let allRef = true;
                         let noCall = false;
-                        for (let g of call.genotype_type) {
-                          console.log(g);
-                            if('.' === g) {
-                                noCall = true;
-                                break;
-                            } else {
-                                if (g != 'HOMOZYGOUS_REFERENCE') allRef = false;
-                                if (g != 'HOMOZYGOUS_ALTERNATE') allVar = false;
-                            }
-                        }
+                        var type = call.genotype_type;
+
+                        if (type != 'HOMOZYGOUS_REFERENCE') allRef = false;
+                        if (type != 'HOMOZYGOUS_ALTERNATE') allVar = false;
 
                         if (noCall) {
                             ctx.fillStyle = this.noCallColor;
