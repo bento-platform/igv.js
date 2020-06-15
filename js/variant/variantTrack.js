@@ -235,8 +235,8 @@ VariantTrack.prototype.draw = function (options) {
                                 noCall = true;
                                 break;
                             } else {
-                                if (g !== 'HOMOZYGOUS_REFERENCE') allVar = false;
-                                if (g === 'HETEROZYGOUS_REFERENCE') allRef = false;
+                                if (g !== 'HOMOZYGOUS_REFERENCE') allRef = false;
+                                if (g !== 'HOMOZYGOUS_ALTERNATE') allVar = false;
                             }
                         }
 
