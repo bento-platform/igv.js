@@ -184,7 +184,8 @@ VariantTrack.prototype.draw = function (options) {
         IGVGraphics.strokeLine(ctx, 0, this.variantBandHeight, pixelWidth, this.variantBandHeight, {strokeStyle: 'rgb(224,224,224) '});
     }
 
-    const featureList = options.features
+    const featureList = options.features;
+    console.log(callSets);
 
     if (featureList) {
       for(var i=0; i<featureList.length; i++){
