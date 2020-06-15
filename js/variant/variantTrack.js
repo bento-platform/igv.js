@@ -231,6 +231,7 @@ VariantTrack.prototype.draw = function (options) {
                         let allRef = true;
                         let noCall = false;
                         var type = call.genotype_type;
+                        console.log(type);
 
                         if (type != 'HOMOZYGOUS_REFERENCE') allRef = false;
                         if (type != 'HOMOZYGOUS_ALTERNATE') allVar = false;
