@@ -467,9 +467,6 @@ TrackView.prototype.updateViews = async function (force) {
     // rpv: viewports whose image (canvas) does not fully cover current genomic range
     const rpV = viewportsToReload.call(this, force);
 
-    console.log('ViewPorts:');
-    console.log(rpV);
-
     // Trigger viewport to load features needed to cover current genomic range
     for (let vp of rpV) {
         await vp.loadFeatures()
