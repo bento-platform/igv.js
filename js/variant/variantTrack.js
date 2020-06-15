@@ -112,6 +112,7 @@ VariantTrack.prototype.getFileHeader = async function () {
         this.header = header;
         return header;
     } else {
+        alert('header');
         this.callSets = this.config.calls || [];
         this.header = []
         callSets.forEach(function (call) {
