@@ -146,6 +146,7 @@ class FeatureSource {
               this.config.calls.forEach(function (call) {
                 this.header.callSets.push(call.sample_id);
               });
+              console.log(this.header);
             } else {
                 this.header = {};
             }
