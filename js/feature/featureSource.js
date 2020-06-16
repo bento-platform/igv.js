@@ -80,9 +80,8 @@ class FeatureSource {
             });
 
             packFeatures(features);
-            if (config.calls) {
-                console.log('calls');
-                mapCalls(features, config.calls)
+            if (config.mappings) {
+                mapProperties(features, config.mappings)
             }
             this.featureCache = new FeatureCache(features, genome);
             this.static = true;
@@ -362,19 +361,6 @@ function mapProperties(features, mappings) {
             f[key] = f[mappings[key]];
         });
     });
-}
-
-function mapCalls(features, calls){
-  var callSets = [];
-  calls.forEach(function (call) {
-    callSets.push(call.sample_id);
-  });
-  let mappingKeys = callSets;
-  features.forEach(function (f) {
-      mappingKeys.forEach(function (key) {
-          f[key] = f[calls[key]];
-      });
-  });
 }
 
 export default FeatureSource;
