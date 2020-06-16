@@ -312,6 +312,8 @@ function createGAVariant(json) {
         })
     }
 
+    console.log(variant.calls);
+
     init(variant);
 
     return variant;
