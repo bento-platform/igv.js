@@ -140,18 +140,19 @@ class FeatureSource {
                 }
                 this.header = header;
             } else if (this.config.sourceType === "ga4gh") {
-              console.log(this.header);
-              this.header = {};
-              this.header.callSets = [];
-              this.config.calls.forEach(function (call) {
-                this.header.callSets.push(call.sample_id);
-              });
-              console.log(this.header);
+                console.log(this.header);
+                this.header = {};
+                this.header.callSets = [];
+                console.log(this.config.calls);
+                this.config.calls.forEach(function (call) {
+                  this.header.callSets.push(call.sample_id);
+                });
+                console.log(this.header);
             } else {
                 this.header = {};
             }
         }
-        return this.header
+        return this.header;
     }
 
     /**
