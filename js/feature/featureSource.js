@@ -81,6 +81,7 @@ class FeatureSource {
 
             packFeatures(features);
             if (config.calls) {
+                console.log('calls');
                 mapCalls(features, config.calls)
             }
             this.featureCache = new FeatureCache(features, genome);
