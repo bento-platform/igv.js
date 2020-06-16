@@ -76,6 +76,7 @@ const VariantTrack = extend(TrackBase,
 VariantTrack.prototype.postInit = async function () {
 
     const header = await this.getFileHeader();   // cricital, don't remove'
+    console.log(header);
     if (undefined === this.visibilityWindow) {
         const fn = this.config.url instanceof File ? this.config.url.name : this.config.url;
         if (isString(fn) && fn.toLowerCase().includes("gnomad")) {
@@ -291,7 +292,6 @@ VariantTrack.prototype.popupData = function (clickState, featureList) {
             } else { // Genotype
 
                 const callSets = this.callSets;
-                console.log(callSets);
                 if (callSets && variant.calls) {
                     const callHeight = this.nRows * ("SQUISHED" === this.displayMode ? this.squishedCallHeight : this.expandedCallHeight);
                     const row = Math.floor((yOffset - this.variantBandHeight) / (callHeight + vGap))
