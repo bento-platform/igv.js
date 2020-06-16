@@ -140,13 +140,12 @@ class FeatureSource {
                 }
                 this.header = header;
             } else if (this.config.sourceType === "ga4gh") {
+              console.log(this.header);
               this.header = {};
               this.header.callSets = [];
-              callSets = [];
               this.config.calls.forEach(function (call) {
-                callSets.push(call.sample_id);
+                this.header.callSets.push(call.sample_id);
               });
-              this.header.callSets = callSets;
             } else {
                 this.header = {};
             }
