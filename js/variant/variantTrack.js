@@ -317,7 +317,8 @@ VariantTrack.prototype.popupData = function (clickState, featureList) {
  * @returns {Array}
  */
 function extractGenotypePopupData(call, variant, genomeId, sampleInformation) {
-
+    console.log(call);
+    console.log(variant);
     let gt = '';
     const altArray = variant.alternateBases.split(",")
     for(let allele of call.genotype) {
