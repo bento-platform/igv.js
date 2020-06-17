@@ -49,7 +49,7 @@ var queryableFormats = new Set(["bigwig", "bw", "bigbed", "bb", "tdf"]);
  */
 class FeatureSource {
 
-    constructor(config, genome) {
+    async constructor(config, genome) {
 
         this.config = config || {};
         this.genome = genome;
