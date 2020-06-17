@@ -296,6 +296,7 @@ VariantTrack.prototype.popupData = function (clickState, featureList) {
                     const callHeight = this.nRows * ("SQUISHED" === this.displayMode ? this.squishedCallHeight : this.expandedCallHeight);
                     const row = Math.floor((yOffset - this.variantBandHeight) / (callHeight + vGap))
                     if (row >= 0 && row < callSets.length) {
+                       console.log(callSets.length);
                         const cs = callSets[row];
                         const call = variant.calls[cs.name];
                         Array.prototype.push.apply(popupData, extractGenotypePopupData(call, variant, genomeID, sampleInformation));
