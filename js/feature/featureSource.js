@@ -49,7 +49,7 @@ var queryableFormats = new Set(["bigwig", "bw", "bigbed", "bb", "tdf"]);
  */
 class FeatureSource {
 
-    async constructor(config, genome) {
+    constructor(config, genome) {
 
         this.config = config || {};
         this.genome = genome;
@@ -70,7 +70,7 @@ class FeatureSource {
             this.static = true;
         } else if (config.sourceType === "ga4gh") {
             var features = [];
-            var header = await getFileHeader();
+            var header = getHeader();
             config.variants.forEach(function (json) {
 
                 var v = createGAVariant(json, header);
@@ -122,6 +122,18 @@ class FeatureSource {
 
     supportsWholeGenome() {
         return this.supportsWG;
+    }
+
+    getHeader(){
+      this.header = {};
+      var callSets = [];
+      var order = 0;
+      this.config.calls.forEach(function (call) {
+        callSets.push({id: order, name: call.sample_id});
+        order++;
+      });
+      this.header.callSets = callSets;
+      return this.header;
     }
 
     async getFileHeader() {
