@@ -70,7 +70,7 @@ class FeatureSource {
             this.static = true;
         } else if (config.sourceType === "ga4gh") {
             var features = [];
-            var header = getHeader();
+            var header = this.getHeader();
             config.variants.forEach(function (json) {
 
                 var v = createGAVariant(json, header);
