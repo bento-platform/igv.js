@@ -114,7 +114,7 @@ VariantTrack.prototype.getFileHeader = async function () {
         this.header = header;
         return header;
     } else {
-        this.callSets = this.config.calls || [];
+        this.callSets = this.featureSource.getHeader() || this.config.calls;
         return undefined;
     }
 
