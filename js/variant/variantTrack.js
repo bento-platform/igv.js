@@ -301,7 +301,7 @@ VariantTrack.prototype.popupData = function (clickState, featureList) {
                         console.log(row);
                         console.log(callSets);
                         const cs = callSets[row];
-                        const call = variant.calls[cs.id];
+                        const call = variant.calls[cs.sample_id];
                         Array.prototype.push.apply(popupData, extractGenotypePopupData(call, variant, genomeID, sampleInformation));
                     }
                 }
