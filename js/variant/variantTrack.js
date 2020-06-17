@@ -114,7 +114,7 @@ VariantTrack.prototype.getFileHeader = async function () {
         this.header = header;
         return header;
     } else {
-        this.callSets = this.config.calls || this.config.calls;
+        this.callSets = this.config.calls || [];
         return undefined;
     }
 
@@ -293,6 +293,7 @@ VariantTrack.prototype.popupData = function (clickState, featureList) {
             } else { // Genotype
 
                 const callSets = this.callSets;
+                console.log(this.callSets);
                 if (callSets && variant.calls) {
                     const callHeight = this.nRows * ("SQUISHED" === this.displayMode ? this.squishedCallHeight : this.expandedCallHeight);
                     const row = Math.floor((yOffset - this.variantBandHeight) / (callHeight + vGap))
