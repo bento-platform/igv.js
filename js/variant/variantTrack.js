@@ -114,8 +114,7 @@ VariantTrack.prototype.getFileHeader = async function () {
         this.header = header;
         return header;
     } else {
-        this.header = this.featureSource.getHeader() || this.config.calls;
-        this.callSets = this.header.callSets;
+        this.callSets = this.config.calls || this.config.calls;
         return undefined;
     }
 
@@ -171,8 +170,6 @@ VariantTrack.prototype.computePixelHeight = function (features) {
 VariantTrack.prototype.draw = function (options) {
 
     const ctx = options.context
-    //this.header = this.featureSource.getHeader() || this.config.calls;
-    //this.callSets = this.header.callSets;
     this.callSets = this.config.calls || [];
     const callSets = this.callSets;
     const nCalls = this.getCallsetsLength();
