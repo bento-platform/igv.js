@@ -173,6 +173,7 @@ VariantTrack.prototype.draw = function (options) {
     const ctx = options.context
     this.header = this.featureSource.getHeader() || this.config.calls;
     this.callSets = this.header.callSets;
+    console.log(callSets);
     //this.callSets = this.config.calls || [];
     const callSets = this.callSets;
     const nCalls = this.getCallsetsLength();
