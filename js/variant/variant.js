@@ -262,7 +262,7 @@ function arrayToString(value, delim) {
  * @param json
  * @returns {Variant}
  */
-function createGAVariant(json) {
+function createGAVariant(json, header) {
 
     var variant = new Variant();
 
@@ -306,13 +306,15 @@ function createGAVariant(json) {
     if (json.calls) {
         json.calls.forEach(function (call) {
             id = call.sample_id;
+            call.callSetName = call.sample_id;
             variant.calls[id] = call;
             order++;
 
         })
     }
 
-    console.log(variant.calls);
+    variant.header = header
+    console.log(variant)
 
     init(variant);
 
