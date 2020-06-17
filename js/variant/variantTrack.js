@@ -95,6 +95,7 @@ VariantTrack.prototype.postInit = async function () {
 VariantTrack.prototype.getFileHeader = async function () {
 
     if (this.header) {
+        this.callSets = this.header.callSets;
         return this.header;
     } else if (typeof this.featureSource.getFileHeader === "function") {
 
@@ -299,7 +300,7 @@ VariantTrack.prototype.popupData = function (clickState, featureList) {
                         console.log(row);
                         console.log(callSets);
                         const cs = callSets[row];
-                        const call = variant.calls[cs.name];
+                        const call = variant.calls[cs.id];
                         Array.prototype.push.apply(popupData, extractGenotypePopupData(call, variant, genomeID, sampleInformation));
                     }
                 }
