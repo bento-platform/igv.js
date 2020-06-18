@@ -298,8 +298,6 @@ VariantTrack.prototype.popupData = function (clickState, featureList) {
                     const callHeight = this.nRows * ("SQUISHED" === this.displayMode ? this.squishedCallHeight : this.expandedCallHeight);
                     const row = Math.floor((yOffset - this.variantBandHeight) / (callHeight + vGap))
                     if (row >= 0 && row < callSets.length) {
-                        console.log(row);
-                        console.log(callSets);
                         const cs = callSets[row];
                         const call = variant.calls[cs.sample_id];
                         Array.prototype.push.apply(popupData, extractGenotypePopupData(call, variant, genomeID, sampleInformation));
@@ -321,29 +319,17 @@ VariantTrack.prototype.popupData = function (clickState, featureList) {
  * @returns {Array}
  */
 function extractGenotypePopupData(call, variant, genomeId, sampleInformation) {
-    console.log(call);
-    console.log(variant);
-    let gt = '';
-    const altArray = variant.alternateBases.split(",")
-    for(let allele of call.genotype) {
-        if('.' === allele) {
-            gt += 'No Call';
-            break;
-        } else if (allele === 0) {
-            gt += variant.referenceBases;
-        } else {
-            let alt = altArray[allele - 1].replace("<", "&lt;");
-            gt += alt;
-        }
-    }
 
     let popupData = [];
     if (call.callSetName !== undefined) {
         popupData.push({name: 'Name', value: call.callSetName});
     }
-    popupData.push({name: 'Genotype', value: gt});
-    if (call.phaseset !== undefined) {
-        popupData.push({name: 'Phase set', value: call.phaseset});
+    popupData.push({name: 'Genotype', value: call.genotype_type});
+    if (call.phase_set !== undefined) {
+        popupData.push({name: 'Phase set', value: call.phase_set});
+    }
+    if (call.genotype_bases !== undefined) {
+        popupData.push({name: 'Genotype Bases', value: call.genotype_bases.toString()});
     }
     if (call.genotypeLikelihood !== undefined) {
         popupData.push({name: 'genotypeLikelihood', value: call.genotypeLikelihood.toString()});
