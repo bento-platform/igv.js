@@ -335,7 +335,8 @@ function extractGenotypePopupData(call, variant, genomeId, sampleInformation) {
         popupData.push({name: 'genotypeLikelihood', value: call.genotypeLikelihood.toString()});
     }
 
-    if (sampleInformation) {
+    if (sampleInformation)
+        console.log(call);
         var attr = sampleInformation.getAttributes(call.callSetName);
         if (attr) {
             Object.keys(attr).forEach(function (attrName) {
