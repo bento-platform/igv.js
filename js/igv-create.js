@@ -510,8 +510,3 @@ function createTrack (config, browser) {
 }
 
 export {createBrowser, removeBrowser, visibilityChange, getBrowser, createTrack}
-
-
-
-
-
