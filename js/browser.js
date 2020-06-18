@@ -2122,5 +2122,3 @@ function addMouseHandlers() {
 
 
 export default Browser
-
-

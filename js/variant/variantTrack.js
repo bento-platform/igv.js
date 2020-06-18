@@ -322,7 +322,7 @@ function extractGenotypePopupData(call, variant, genomeId, sampleInformation) {
 
     let popupData = [];
     if (call.callSetName !== undefined) {
-        popupData.push({name: 'Name', value: call.callSetName});
+        popupData.push({name: 'Sample ID', value: call.callSetName});
     }
     popupData.push({name: 'Genotype', value: call.genotype_type});
     if (call.phase_set !== undefined) {
