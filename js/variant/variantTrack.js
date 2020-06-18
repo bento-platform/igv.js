@@ -335,8 +335,6 @@ function extractGenotypePopupData(call, variant, genomeId, sampleInformation) {
         popupData.push({name: 'genotypeLikelihood', value: call.genotypeLikelihood.toString()});
     }
 
-  console.log(call);
-
     if (sampleInformation) {
         var attr = sampleInformation.getAttributes(call.callSetName);
         if (attr) {
@@ -348,13 +346,15 @@ function extractGenotypePopupData(call, variant, genomeId, sampleInformation) {
         }
     }
 
-    var infoKeys = Object.keys(call.info);
-    if (infoKeys.length) {
-        popupData.push("<hr>");
+    if(call.info){
+      var infoKeys = Object.keys(call.info);
+      if (infoKeys.length) {
+          popupData.push("<hr>");
+      }
+      infoKeys.forEach(function (key) {
+          popupData.push({name: key, value: call.info[key]});
+      });
     }
-    infoKeys.forEach(function (key) {
-        popupData.push({name: key, value: call.info[key]});
-    });
 
     let cravatLinks = [];                   // TODO -- where do these get calculated?
     if (cravatLinks.length > 0) {
