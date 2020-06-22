@@ -192,7 +192,6 @@ VariantTrack.prototype.draw = function (options) {
     if (featureList) {
       for(var i=0; i<featureList.length; i++){
             var variant = featureList[i];
-            console.log(variant);
             if (variant.end < bpStart) continue;
             if (variant.start > bpEnd) break;
 
@@ -226,11 +225,10 @@ VariantTrack.prototype.draw = function (options) {
 
                 let callsDrawn = 0;
 
-                console.log(variant.calls);
-                for(var j =0; j<variant.calls.length; j++){
-                    //const callSet = callSets[j];
-                    console.log(call);
-                    const call = variant.calls[j];
+                console.log(callSets);
+                for(var j =0; j<callSets.length; j++){
+                    const callSet = callSets[j];
+                    const call = variant.calls[callSet.sample_id];
                     if (call) {
                         const py = this.variantBandHeight + vGap + (callsDrawn + variant.row) * (callHeight + vGap)
                         let allVar = true;  // until proven otherwise
