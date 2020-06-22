@@ -225,28 +225,24 @@ VariantTrack.prototype.draw = function (options) {
 
                 let callsDrawn = 0;
 
-                console.log(callSets.length);
                 for(var j =0; j<callSets.length; j++){
                     const callSet = callSets[j];
                     const call = variant.calls[callSet.name];
                     if (call) {
                         const py = this.variantBandHeight + vGap + (callsDrawn + variant.row) * (callHeight + vGap)
-                        let allVar = true;  // until proven otherwise
-                        let allRef = true;
-                        let noCall = false;
                         var type = call.genotype_type;
 
-                        if (type != 'HOMOZYGOUS_REFERENCE') allRef = false;
-                        if (type != 'HOMOZYGOUS_ALTERNATE') allVar = false;
-
-                        if (noCall) {
-                            ctx.fillStyle = this.noCallColor;
-                        } else if (allRef) {
+                        switch (type) {
+                          case 'HOMOZYGOUS_REFERENCE':
                             ctx.fillStyle = this.homrefColor;
-                        } else if (allVar) {
+                            break;
+                          case 'HOMOZYGOUS_ALTERNATE':
                             ctx.fillStyle = this.homvarColor;
-                        } else {
+                            break;
+                          default:
                             ctx.fillStyle = this.hetvarColor;
+                            break;
+
                         }
 
                         ctx.fillRect(px, py, pw, callHeight);
@@ -294,7 +290,6 @@ VariantTrack.prototype.popupData = function (clickState, featureList) {
             } else { // Genotype
 
                 const callSets = this.callSets;
-                console.log(this.callSets);
                 if (callSets && variant.calls) {
                     const callHeight = this.nRows * ("SQUISHED" === this.displayMode ? this.squishedCallHeight : this.expandedCallHeight);
                     const row = Math.floor((yOffset - this.variantBandHeight) / (callHeight + vGap))
