@@ -170,7 +170,7 @@ VariantTrack.prototype.computePixelHeight = function (features) {
 VariantTrack.prototype.draw = function (options) {
 
     const ctx = options.context
-    this.callSets = this.config.calls || [];
+    this.callSets = this.header.callSets ||this.config.calls || [];
     const callSets = this.callSets;
     const nCalls = this.getCallsetsLength();
     const pixelWidth = options.pixelWidth
