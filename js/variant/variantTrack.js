@@ -300,6 +300,7 @@ VariantTrack.prototype.popupData = function (clickState, featureList) {
                     const row = Math.floor((yOffset - this.variantBandHeight) / (callHeight + vGap))
                     if (row >= 0 && row < callSets.length) {
                         const cs = callSets[row];
+                        console.log(cs);
                         const call = variant.calls[cs.name];
                         Array.prototype.push.apply(popupData, extractGenotypePopupData(call, variant, genomeID, sampleInformation));
                     }
