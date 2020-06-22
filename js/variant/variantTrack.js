@@ -225,10 +225,10 @@ VariantTrack.prototype.draw = function (options) {
 
                 let callsDrawn = 0;
 
-                console.log(callSets);
+                console.log(callSets.length);
                 for(var j =0; j<callSets.length; j++){
                     const callSet = callSets[j];
-                    const call = variant.calls[callSet.sample_id];
+                    const call = variant.calls[callSet.name];
                     if (call) {
                         const py = this.variantBandHeight + vGap + (callsDrawn + variant.row) * (callHeight + vGap)
                         let allVar = true;  // until proven otherwise
