@@ -266,13 +266,13 @@ function createGAVariant(json, header) {
 
     var variant = new Variant();
 
-    variant.chr = json.chr;
+    variant.chr = json.chromosome;
     variant.start = parseInt(json.start);  // Might get overriden below
     variant.end = parseInt(json.end);      // Might get overriden below
     variant.pos = variant.start + 1;       // GA4GH is 0 based.
     variant.names = arrayToString(json.names, "; ");
-    variant.referenceBases = json.referenceBases;
-    variant.alternateBases = arrayToString(json.alternateBases);
+    variant.referenceBases = json.ref;
+    variant.alternateBases = arrayToString(json.alt);
     //variant.quality = json.quality;
     //variant.filter = arrayToString(json.filter);
 
