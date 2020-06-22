@@ -226,7 +226,7 @@ VariantTrack.prototype.draw = function (options) {
 
                 let callsDrawn = 0;
 
-                console.log(calls.length);
+                console.log(variant.calls.length);
                 for(var j =0; j<variant.calls.length; j++){
                     //const callSet = callSets[j];
                     console.log(call);
