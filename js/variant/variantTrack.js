@@ -76,7 +76,6 @@ const VariantTrack = extend(TrackBase,
 VariantTrack.prototype.postInit = async function () {
 
     const header = await this.getFileHeader();   // cricital, don't remove'
-    console.log(header);
     if (undefined === this.visibilityWindow) {
         const fn = this.config.url instanceof File ? this.config.url.name : this.config.url;
         if (isString(fn) && fn.toLowerCase().includes("gnomad")) {
@@ -170,7 +169,7 @@ VariantTrack.prototype.computePixelHeight = function (features) {
 VariantTrack.prototype.draw = function (options) {
 
     const ctx = options.context
-    this.callSets = this.header.callSets ||this.config.calls || [];
+    this.callSets = this.header.callSets || this.config.calls || [];
     const callSets = this.callSets;
     const nCalls = this.getCallsetsLength();
     const pixelWidth = options.pixelWidth
@@ -187,7 +186,7 @@ VariantTrack.prototype.draw = function (options) {
         IGVGraphics.strokeLine(ctx, 0, this.variantBandHeight, pixelWidth, this.variantBandHeight, {strokeStyle: 'rgb(224,224,224) '});
     }
 
-    const featureList = options.features;
+    const featureList = options.features
 
     if (featureList) {
       for(var i=0; i<featureList.length; i++){
@@ -295,7 +294,6 @@ VariantTrack.prototype.popupData = function (clickState, featureList) {
                     const row = Math.floor((yOffset - this.variantBandHeight) / (callHeight + vGap))
                     if (row >= 0 && row < callSets.length) {
                         const cs = callSets[row];
-                        console.log(cs);
                         const call = variant.calls[cs.name];
                         Array.prototype.push.apply(popupData, extractGenotypePopupData(call, variant, genomeID, sampleInformation));
                     }
@@ -343,14 +341,14 @@ function extractGenotypePopupData(call, variant, genomeId, sampleInformation) {
         }
     }
 
-    if(call.info){
-      var infoKeys = Object.keys(call.info);
-      if (infoKeys.length) {
-          popupData.push("<hr>");
-      }
-      infoKeys.forEach(function (key) {
-          popupData.push({name: key, value: call.info[key]});
-      });
+    if (call.info) {
+        var infoKeys = Object.keys(call.info);
+        if (infoKeys.length) {
+            popupData.push("<hr>");
+        }
+        infoKeys.forEach(function (key) {
+            popupData.push({name: key, value: call.info[key]});
+        });
     }
 
     let cravatLinks = [];                   // TODO -- where do these get calculated?

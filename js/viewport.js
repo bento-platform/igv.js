@@ -478,7 +478,7 @@ class ViewPort {
 
     isLoading() {
         return this.loading;
-    }
+    };
 
     saveImage() {
 
@@ -502,7 +502,7 @@ class ViewPort {
         const filename = (this.$trackLabel.text() ? this.$trackLabel.text() : "image") + ".png";
         const data = exportCanvas.toDataURL("image/png");
         download(filename, data);
-    }
+    };
 
     async renderSVGContext(context, offset) {
 
@@ -568,7 +568,7 @@ class ViewPort {
 
         context.restore();
 
-    }
+    };
 
     saveSVG() {
 

@@ -256,7 +256,6 @@ function arrayToString(value, delim) {
     return value.join(delim);
 }
 
-
 /**
  * @deprecated - the GA4GH API has been deprecated.  This code no longer maintained.
  * @param json
@@ -266,15 +265,15 @@ function createGAVariant(json, header) {
 
     var variant = new Variant();
 
-    variant.chr = json.chromosome;
+    variant.chr = json.referenceName;
     variant.start = parseInt(json.start);  // Might get overriden below
     variant.end = parseInt(json.end);      // Might get overriden below
     variant.pos = variant.start + 1;       // GA4GH is 0 based.
     variant.names = arrayToString(json.names, "; ");
-    variant.referenceBases = json.ref;
-    variant.alternateBases = arrayToString(json.alt);
-    //variant.quality = json.quality;
-    //variant.filter = arrayToString(json.filter);
+    variant.referenceBases = json.referenceBases;
+    variant.alternateBases = arrayToString(json.alternateBases);
+    variant.quality = json.quality;
+    variant.filter = arrayToString(json.filter);
 
 
     // Flatten GA4GH attributes array
@@ -305,6 +304,66 @@ function createGAVariant(json, header) {
     var order = 0, id;
     if (json.calls) {
         json.calls.forEach(function (call) {
+            id = call.callSetId;
+            variant.calls[id] = call;
+            order++;
+
+        })
+    }
+
+    init(variant);
+
+    return variant;
+
+}
+
+/**
+ * @param json
+ * @param header
+ **/
+function createBentoVariant(json, header) {
+    // Copied from the GAVariant function
+
+    var variant = new Variant();
+
+    variant.chr = json.chromosome;
+    variant.start = parseInt(json.start);  // Might get overriden below
+    variant.end = parseInt(json.end);      // Might get overriden below
+    variant.pos = variant.start + 1;       // GA4GH is 0 based.
+    variant.names = arrayToString(json.names, "; ");
+    variant.referenceBases = json.ref;
+    variant.alternateBases = arrayToString(json.alt);
+    //variant.quality = json.quality;
+    //variant.filter = arrayToString(json.filter);
+
+
+    // Flatten GA4GH attributes array
+    variant.info = {};
+    if (json.info) {
+        Object.keys(json.info).forEach(function (key) {
+            var value,
+                valueArray = json.info[key];
+
+            if (Array.isArray(valueArray)) {
+                value = valueArray.join(",");
+            } else {
+                value = valueArray;
+            }
+            variant.info[key] = value;
+        });
+    }
+
+    // Need to build a hash of calls for fast lookup
+    // Note from the GA4GH spec on call ID:
+    //
+    // The ID of the call set this variant call belongs to. If this field is not present,
+    // the ordering of the call sets from a SearchCallSetsRequest over this GAVariantSet
+    // is guaranteed to match the ordering of the calls on this GAVariant.
+    // The number of results will also be the same.
+    variant.calls = {};
+    var order = 0, id;
+    if (json.calls) {
+        json.calls.forEach(function (call) {
             id = call.sample_id;
             call.callSetName = call.sample_id;
             variant.calls[id] = call;
@@ -313,13 +372,11 @@ function createGAVariant(json, header) {
         })
     }
 
-    variant.header = header
-    console.log(variant)
+    variant.header = header;
 
     init(variant);
 
-    return variant;
-
+    return variant; 
 }
 
-export {createVCFVariant, createGAVariant};
+export {createVCFVariant, createGAVariant, createBentoVariant};
