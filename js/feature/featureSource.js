@@ -157,9 +157,9 @@ class FeatureSource {
                 this.header = {
                     callSets: new Set(this.config.matches.flatMap(function (match) {
                         return match.calls.map(function (call) { return call.sample_id; });
-                    })).map(function (callSetId, order) {
+                    }).map(function (callSetId, order) {
                         return {id: order, name: callSetId};
-                    });
+                    })),
                 };
             } else {
                 this.header = {};
