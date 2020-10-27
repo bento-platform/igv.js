@@ -153,15 +153,14 @@ class FeatureSource {
                         this.config.format = header.format;
                 }
                 this.header = header;
-            } else if (this.config.sourceType === "ga4gh") {
-                this.header = {};
-                var callSets = [];
-                var order = 0;
-                this.config.calls.forEach(function (call) {
-                  callSets.push({id: order, name: call.sample_id});
-                  order++;
-                });
-                this.header.callSets = callSets;
+            } else if (this.config.sourceType === "bento") {
+                this.header = {
+                    callSets: new Set(this.config.matches.flatMap(function (match) {
+                        return match.calls.map(function (call) { return call.sample_id; });
+                    })).map(function (callSetId, order) {
+                        return {id: order, name: callSetId};
+                    });
+                };
             } else {
                 this.header = {};
             }
