@@ -32,7 +32,7 @@ import GtexReader from "../gtex/gtexReader.js";
 import ImmVarReader from "../gtex/immvarReader.js";
 import TrackBase from "../trackBase.js";
 import Ga4ghVariantReader from "../ga4gh/ga4ghVariantReader.js";
-import {createGAVariant} from "../variant/variant.js";
+import {createBentoVariant, createGAVariant} from "../variant/variant.js";
 import CivicReader from "../civic/civicReader.js";
 import GenomicInterval from "../genome/genomicInterval.js";
 import pack from "../feature/featurePacker.js";
@@ -68,12 +68,11 @@ class FeatureSource {
             }
             this.featureCache = new FeatureCache(features, genome);
             this.static = true;
-        } else if (config.sourceType === "ga4gh") {
+        } else if (config.sourceType === "bento") {
             var features = [];
             var header = this.getHeader();
             config.variants.forEach(function (json) {
-
-                var v = createGAVariant(json, header);
+                var v = createBentoVariant(json, header);
                 if (!v.isRefBlock()) {
                     features.push(v);
                 }
@@ -85,6 +84,9 @@ class FeatureSource {
             }
             this.featureCache = new FeatureCache(features, genome);
             this.static = true;
+        } else if (config.sourceType === "ga4gh") {
+            this.reader = new Ga4ghVariantReader(config, genome);
+            this.queryable = true;
         } else if (config.sourceType === "immvar") {
             this.reader = new ImmVarReader(config);
             this.queryable = true;
