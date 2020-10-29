@@ -94,7 +94,6 @@ VariantTrack.prototype.postInit = async function () {
 VariantTrack.prototype.getFileHeader = async function () {
 
     if (this.header) {
-        this.callSets = this.header.callSets;
         return this.header;
     } else if (typeof this.featureSource.getFileHeader === "function") {
 
@@ -113,7 +112,7 @@ VariantTrack.prototype.getFileHeader = async function () {
         this.header = header;
         return header;
     } else {
-        this.callSets = this.config.calls || [];
+        this.callSets = [];
         return undefined;
     }
 
@@ -169,7 +168,6 @@ VariantTrack.prototype.computePixelHeight = function (features) {
 VariantTrack.prototype.draw = function (options) {
 
     const ctx = options.context
-    this.callSets = this.header.callSets || this.config.calls || [];
     const callSets = this.callSets;
     const nCalls = this.getCallsetsLength();
     const pixelWidth = options.pixelWidth
@@ -226,10 +224,12 @@ VariantTrack.prototype.draw = function (options) {
 
                 for(var j =0; j<callSets.length; j++){
                     const callSet = callSets[j];
-                    const call = variant.calls[callSet.name];
+                    const call = variant.calls[callSet.id];
                     if (call) {
                         const py = this.variantBandHeight + vGap + (callsDrawn + variant.row) * (callHeight + vGap)
                         var type = call.genotype_type;
+
+                        // TODO: Only use this logic for Bento
 
                         switch (type) {
                           case 'HOMOZYGOUS_REFERENCE':
@@ -294,7 +294,7 @@ VariantTrack.prototype.popupData = function (clickState, featureList) {
                     const row = Math.floor((yOffset - this.variantBandHeight) / (callHeight + vGap))
                     if (row >= 0 && row < callSets.length) {
                         const cs = callSets[row];
-                        const call = variant.calls[cs.name];
+                        const call = variant.calls[cs.id];
                         Array.prototype.push.apply(popupData, extractGenotypePopupData(call, variant, genomeID, sampleInformation));
                     }
                 }

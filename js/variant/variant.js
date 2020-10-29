@@ -256,12 +256,13 @@ function arrayToString(value, delim) {
     return value.join(delim);
 }
 
+
 /**
  * @deprecated - the GA4GH API has been deprecated.  This code no longer maintained.
  * @param json
  * @returns {Variant}
  */
-function createGAVariant(json, header) {
+function createGAVariant(json) {
 
     var variant = new Variant();
 
@@ -362,13 +363,16 @@ function createBentoVariant(json, header) {
     // The number of results will also be the same.
     variant.calls = {};
     if (json.calls) {
-        json.calls.forEach(function (call) {
+        json.calls.forEach(function (call, order) {
+            call.callSetId = call.sample_id;
             call.callSetName = call.sample_id;
-            variant.calls[call.sample_id] = call;
-        })
+            variant.calls[call.callSetId] = call;
+        });
+    } else {
+        console.log("Bento igv.js: Missing calls for", json);
     }
 
-    variant.header = header;
+    // variant.header = header;
 
     init(variant);
 

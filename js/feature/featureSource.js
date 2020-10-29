@@ -32,7 +32,7 @@ import GtexReader from "../gtex/gtexReader.js";
 import ImmVarReader from "../gtex/immvarReader.js";
 import TrackBase from "../trackBase.js";
 import Ga4ghVariantReader from "../ga4gh/ga4ghVariantReader.js";
-import {createBentoVariant, createGAVariant} from "../variant/variant.js";
+import {createBentoVariant} from "../variant/variant.js";
 import CivicReader from "../civic/civicReader.js";
 import GenomicInterval from "../genome/genomicInterval.js";
 import pack from "../feature/featurePacker.js";
@@ -129,11 +129,13 @@ class FeatureSource {
 
     getBentoHeader() {
         return {
-            callSets: new Set(this.config.variants.flatMap(function (match) {
-                return match.calls.map(function (call) { return call.sample_id; });
-            }).map(function (callSetId, order) {
-                return {id: order, name: callSetId};
-            })),
+            callSets: [
+                ...new Set(this.config.variants.flatMap(function (match) {
+                    return match.calls.map(function (call) { return call.sample_id; });
+                }))
+            ].map(function (callSetId) {
+                return {id: callSetId, name: callSetId};
+            }),
         };
     }
 
@@ -158,7 +160,7 @@ class FeatureSource {
                 this.header = {};
             }
         }
-        return this.header;
+        return this.header
     }
 
     /**
