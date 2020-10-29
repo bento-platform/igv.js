@@ -70,7 +70,7 @@ class FeatureSource {
             this.static = true;
         } else if (config.sourceType === "bento") {
             var features = [];
-            var header = this.getHeader();
+            this.header = this.getBentoHeader();
             config.variants.forEach(function (json) {
                 var v = createBentoVariant(json, header);
                 if (!v.isRefBlock()) {
@@ -126,16 +126,14 @@ class FeatureSource {
         return this.supportsWG;
     }
 
-    getHeader(){
-      this.header = {};
-      var callSets = [];
-      var order = 0;
-      this.config.calls.forEach(function (call) {
-        callSets.push({id: order, name: call.sample_id});
-        order++;
-      });
-      this.header.callSets = callSets;
-      return this.header;
+    getBentoHeader() {
+        return {
+            callSets: new Set(this.config.variants.flatMap(function (match) {
+                return match.calls.map(function (call) { return call.sample_id; });
+            }).map(function (callSetId, order) {
+                return {id: order, name: callSetId};
+            })),
+        };
     }
 
     async getFileHeader() {
@@ -154,13 +152,7 @@ class FeatureSource {
                 }
                 this.header = header;
             } else if (this.config.sourceType === "bento") {
-                this.header = {
-                    callSets: new Set(this.config.matches.flatMap(function (match) {
-                        return match.calls.map(function (call) { return call.sample_id; });
-                    }).map(function (callSetId, order) {
-                        return {id: order, name: callSetId};
-                    })),
-                };
+                this.header = getBentoHeader();
             } else {
                 this.header = {};
             }

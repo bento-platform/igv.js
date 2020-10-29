@@ -361,14 +361,10 @@ function createBentoVariant(json, header) {
     // is guaranteed to match the ordering of the calls on this GAVariant.
     // The number of results will also be the same.
     variant.calls = {};
-    var order = 0, id;
     if (json.calls) {
         json.calls.forEach(function (call) {
-            id = call.sample_id;
             call.callSetName = call.sample_id;
-            variant.calls[id] = call;
-            order++;
-
+            variant.calls[call.sample_id] = call;
         })
     }
 
