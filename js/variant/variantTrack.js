@@ -187,8 +187,7 @@ VariantTrack.prototype.draw = function (options) {
     const featureList = options.features
 
     if (featureList) {
-      for(var i=0; i<featureList.length; i++){
-            var variant = featureList[i];
+        for (let variant of featureList){
             if (variant.end < bpStart) continue;
             if (variant.start > bpEnd) break;
 
@@ -222,12 +221,12 @@ VariantTrack.prototype.draw = function (options) {
 
                 let callsDrawn = 0;
 
-                for(var j =0; j<callSets.length; j++){
-                    const callSet = callSets[j];
+                for (let callSet of callSets) {
+                    console.log("Processing callset", callSet.id, "for variant", variant, variant.calls[callSet.id]);
                     const call = variant.calls[callSet.id];
                     if (call) {
                         const py = this.variantBandHeight + vGap + (callsDrawn + variant.row) * (callHeight + vGap)
-                        var type = call.genotype_type;
+                        const type = call.genotype_type;
 
                         // TODO: Only use this logic for Bento
 
@@ -314,6 +313,7 @@ VariantTrack.prototype.popupData = function (clickState, featureList) {
  * @returns {Array}
  */
 function extractGenotypePopupData(call, variant, genomeId, sampleInformation) {
+    console.log("Popup for variant", variant, "call", call);
 
     let popupData = [];
     if (call.callSetName !== undefined) {
