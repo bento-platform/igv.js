@@ -70,7 +70,8 @@ class FeatureSource {
             this.static = true;
         } else if (config.sourceType === "bento") {
             var features = [];
-            this.header = this.getBentoHeader();
+            const header = this.getBentoHeader();
+            this.header = header;
             config.variants.forEach(function (json) {
                 var v = createBentoVariant(json, header);
                 if (!v.isRefBlock()) {
