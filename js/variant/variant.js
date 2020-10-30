@@ -366,6 +366,7 @@ function createBentoVariant(json, header) {
         json.calls.forEach(function (call, order) {
             call.callSetId = call.sample_id;
             call.callSetName = call.sample_id;
+            call.info = call.info || {};  // Make sure call.info is present for popup
             variant.calls[call.callSetId] = call;
         });
     } else {

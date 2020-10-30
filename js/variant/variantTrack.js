@@ -187,7 +187,7 @@ VariantTrack.prototype.draw = function (options) {
     const featureList = options.features
 
     if (featureList) {
-        for (let variant of featureList){
+        for (let variant of featureList) {
             if (variant.end < bpStart) continue;
             if (variant.start > bpEnd) break;
 
@@ -341,15 +341,13 @@ function extractGenotypePopupData(call, variant, genomeId, sampleInformation) {
         }
     }
 
-    if (call.info) {
-        var infoKeys = Object.keys(call.info);
-        if (infoKeys.length) {
-            popupData.push("<hr>");
-        }
-        infoKeys.forEach(function (key) {
-            popupData.push({name: key, value: call.info[key]});
-        });
+    var infoKeys = Object.keys(call.info);
+    if (infoKeys.length) {
+        popupData.push("<hr>");
     }
+    infoKeys.forEach(function (key) {
+        popupData.push({name: key, value: call.info[key]});
+    });
 
     let cravatLinks = [];                   // TODO -- where do these get calculated?
     if (cravatLinks.length > 0) {
