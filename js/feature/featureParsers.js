@@ -26,6 +26,7 @@
 import getDataWrapper from "./dataWrapper.js";
 import IGVColor from "../igv-color.js";
 import {getFormat} from "../util/trackUtils.js";
+import {numberFormatter} from "../util/stringUtils.js"
 
 /**
  *  Define parsers for bed-like files  (.bed, .gff, .vcf, etc).  A parser should implement 2 methods
@@ -512,7 +513,7 @@ function decodeBed(tokens, ignore) {
  */
 function decodeRepeatMasker(tokens, ignore) {
 
-    if (tokens.length < 15) return undefined;
+    if (tokens.length <= 15) return undefined;
 
     const feature = {
         swScore: Number.parseInt(tokens[1]),
@@ -547,7 +548,7 @@ function decodeGenePred(tokens, ignore) {
 
     var shift = this.shift === undefined ? 0 : 1;
 
-    if (tokens.length < 9 + shift) return undefined;
+    if (tokens.length <= 9 + shift) return undefined;
 
     const cdStart = parseInt(tokens[5 + shift])
     const cdEnd = parseInt(tokens[6 + shift])
@@ -590,7 +591,7 @@ function decodeGenePredExt(tokens, ignore) {
 
     var shift = this.shift === undefined ? 0 : 1;
 
-    if (tokens.length < 11 + shift) return undefined;
+    if (tokens.length <= 11 + shift) return undefined;
 
     const cdStart = parseInt(tokens[5 + shift])
     const cdEnd = parseInt(tokens[6 + shift])
@@ -631,7 +632,7 @@ function decodeReflat(tokens, ignore) {
 
     var shift = this.shift === undefined ? 0 : 1;
 
-    if (tokens.length < 10 + shift) return undefined;
+    if (tokens.length <= 10 + shift) return undefined;
 
     const cdStart = parseInt(tokens[6 + shift])
     const cdEnd = parseInt(tokens[7 + shift])
@@ -686,8 +687,8 @@ function decodePeak(tokens, ignore) {
     var tokenCount, chr, start, end, strand, name, score, qValue, signal, pValue;
 
     tokenCount = tokens.length;
-    if (tokenCount < 9) {
-        return null;
+    if (tokenCount <= 9) {
+        return undefined;
     }
 
     chr = tokens[0];
@@ -712,7 +713,7 @@ function decodeBedGraph(tokens, ignore) {
 
     var chr, start, end, value;
 
-    if (tokens.length < 3) return null;
+    if (tokens.length <= 3) return undefined;
 
     chr = tokens[0];
     start = parseInt(tokens[1]);
@@ -961,21 +962,24 @@ function GFFFeature(props) {
 GFFFeature.prototype.popupData = function (genomicLocation) {
     const kvs = this.attributeString.split(';')
     const pd = [];
-    pd.push({name: 'type', value: this.type})
-    pd.push({name: 'start', value: this.start + 1})
-    pd.push({name: 'end', value: this.end})
+    if(this.name) {
+        pd.push({name: 'name:', value: this.name})
+    }
+    pd.push({name: 'type:', value: this.type})
     for (let kv of kvs) {
         const t = kv.trim().split(this.delim, 2);
         if (t.length === 2 && t[1] !== undefined) {
             const key = t[0].trim();
+            if('name' === key.toLowerCase()) continue;
             let value = t[1].trim();
             //Strip off quotes, if any
             if (value.startsWith('"') && value.endsWith('"')) {
                 value = value.substr(1, value.length - 2);
             }
-            pd.push({name: key, value: value});
+            pd.push({name: key + ":", value: value});
         }
     }
+    pd.push({name: 'position:', value: `${this.chr}:${numberFormatter(this.start + 1)}-${numberFormatter(this.end)}`})
     return pd;
 }
 

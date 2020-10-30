@@ -37,6 +37,15 @@ const SECONDARY_ALIGNMNET_FLAG = 0x100;
 const READ_FAILS_VENDOR_QUALITY_CHECK_FLAG = 0x200;
 const DUPLICATE_READ_FLAG = 0x400;
 const SUPPLEMENTARY_ALIGNMENT_FLAG = 0x800;
+const ELEMENT_SIZE = {
+    c: 1,
+    C: 1,
+    s: 2,
+    S: 2,
+    i: 4,
+    I: 4,
+    f: 4
+}
 
 /**
  * readName
@@ -117,32 +126,33 @@ BamAlignment.prototype.tags = function () {
 
     function decodeTags(ba) {
 
-        var p = 0,
-            len = ba.length,
-            tags = {};
+        let p = 0;
+        const len = ba.length;
+        const tags = {};
 
         while (p < len) {
-            var tag = String.fromCharCode(ba[p]) + String.fromCharCode(ba[p + 1]);
-            var type = String.fromCharCode(ba[p + 2]);
-            var value;
+            const tag = String.fromCharCode(ba[p]) + String.fromCharCode(ba[p + 1]);
+            p += 2;
 
+            const type = String.fromCharCode(ba[p++]);
+
+            let value;
             if (type === 'A') {
-                value = String.fromCharCode(ba[p + 3]);
-                p += 4;
+                value = String.fromCharCode(ba[p]);
+                p++;
             } else if (type === 'i' || type === 'I') {
-                value = readInt(ba, p + 3);
-                p += 7;
-            } else if (type === 'c' || type === 'C') {
-                value = ba[p + 3];
+                value = readInt(ba, p);
                 p += 4;
+            } else if (type === 'c' || type === 'C') {
+                value = ba[p];
+                p++;
             } else if (type === 's' || type === 'S') {
-                value = readShort(ba, p + 3);
-                p += 5;
+                value = readShort(ba, p);
+                p += 2;
             } else if (type === 'f') {
-                value = readFloat(ba, p + 3);
-                p += 7;
+                value = readFloat(ba, p);
+                p += 4;
             } else if (type === 'Z') {
-                p += 3;
                 value = '';
                 for (; ;) {
                     var cc = ba[p++];
@@ -153,11 +163,20 @@ BamAlignment.prototype.tags = function () {
                     }
                 }
             } else if (type === 'B') {
-                value = 'Arrays not currently supported';
-            }
-            else {
+                const elementType = String.fromCharCode(ba[p++]);
+                let elementSize = ELEMENT_SIZE[elementType];
+                if(elementSize === undefined) {
+                    tags[tag] = `Error: unknown element type '${elementType}'`;
+                    break;
+                }
+                const numElements = readInt(ba, p);
+                p += (4 + numElements * elementSize);
+                value = '[not shown]';
+            } else {
                 //'Unknown type ' + type;
                 value = 'Error unknown type: ' + type;
+                tags[tag] = value;
+                break;
             }
             tags[tag] = value;
         }
@@ -262,9 +281,7 @@ BamAlignment.prototype.popupData = function (genomicLocation) {
 BamAlignment.prototype.readBaseAt = function (genomicLocation) {
 
     const block = blockAtGenomicLocation(this.blocks, genomicLocation);
-
     if (block) {
-
         if ("*" === this.seq) {
             return "*";
         } else {
@@ -281,14 +298,13 @@ BamAlignment.prototype.readBaseAt = function (genomicLocation) {
 BamAlignment.prototype.readBaseQualityAt = function (genomicLocation) {
 
     const block = blockAtGenomicLocation(this.blocks, genomicLocation);
-
     if (block) {
         if ("*" === this.qual) {
             return 30;
         } else {
             const idx = block.seqIndexAt(genomicLocation);
             if (idx >= 0 && this.qual && idx < this.qual.length) {
-            return this.qual[idx];
+                return this.qual[idx];
             } else {
                 return 30;
             }
@@ -296,7 +312,17 @@ BamAlignment.prototype.readBaseQualityAt = function (genomicLocation) {
     } else {
         return undefined;
     }
+}
 
+BamAlignment.prototype.gapSizeAt = function (genomicLocation) {
+    if (this.gaps) {
+        for (let gap of this.gaps) {
+            if (genomicLocation >= gap.start && genomicLocation < gap.start + gap.len) {
+                return gap.len;
+            }
+        }
+    }
+    return 0;
 }
 
 function blockAtGenomicLocation(blocks, genomicLocation) {

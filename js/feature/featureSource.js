@@ -57,7 +57,7 @@ class FeatureSource {
 
         // Default GFF filter -- these feature types will be filtered out
         if (undefined === config.filterTypes) {
-            config.filterTypes = ['chromosome', 'gene']
+            config.filterTypes = ['chromosome']
         }
 
         if (config.features && Array.isArray(config.features)) {
@@ -202,7 +202,8 @@ class FeatureSource {
             let intervalEnd = bpEnd;
             let genomicInterval = new GenomicInterval(queryChr, intervalStart, intervalEnd);
 
-            if (this.featureCache &&
+            if (this.config.disableCache !== true &&
+                this.featureCache &&
                 (this.static || this.featureCache.containsRange(genomicInterval) || "all" === chr.toLowerCase())) {
                 return this.featureCache;
             } else {

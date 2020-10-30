@@ -12,7 +12,6 @@ import {guid, pageCoordinates, relativeDOMBBox, translateMouseCoordinates} from 
 import {download} from "./util/igvUtils.js";
 
 const NOT_LOADED_MESSAGE = 'Error loading track data';
-const VISUAL_TRACK_MARGIN = 5;
 
 class ViewPort {
 
@@ -39,7 +38,7 @@ class ViewPort {
         this.contentDiv = $div.get(0);
 
         // viewport canvas
-        const $canvas = $('<canvas>');
+        const $canvas = $('<canvas class ="igv-canvas">');
         $(this.contentDiv).append($canvas);
 
         this.canvas = $canvas.get(0);
@@ -319,8 +318,9 @@ class ViewPort {
         const pixelWidth = isWGV ? this.$viewport.width() : Math.ceil((bpEnd - bpStart) / bpPerPixel);
 
         // For deep tracks we paint a canvas == 3*viewportHeight centered on the current vertical scroll position
-        const viewportHeight = this.$viewport.height()
-        let pixelHeight = Math.min(self.getContentHeight(), 3 * viewportHeight);
+        const viewportHeight = this.$viewport.height();
+        const minHeight = roiFeatures ? Math.max(self.getContentHeight(), viewportHeight) : self.getContentHeight();  // Need to fill viewport for ROIs.
+        let pixelHeight = Math.min(minHeight, 3 * viewportHeight);
         if (0 === pixelWidth || 0 === pixelHeight) {
             if (self.canvas) {
                 $(self.canvas).remove();
@@ -341,8 +341,8 @@ class ViewPort {
             {
                 features: features,
                 pixelWidth: pixelWidth,
-                pixelHeight: pixelHeight - 2*VISUAL_TRACK_MARGIN,
-                pixelTop: canvasTop + VISUAL_TRACK_MARGIN,
+                pixelHeight: pixelHeight,
+                pixelTop: canvasTop,
                 bpStart: bpStart,
                 bpEnd: bpEnd,
                 bpPerPixel: bpPerPixel,
@@ -355,7 +355,7 @@ class ViewPort {
                 viewportContainerWidth: this.browser.viewportContainerWidth()
             };
 
-        const newCanvas = $('<canvas>').get(0);
+        const newCanvas = $('<canvas class="igv-canvas">').get(0);
         newCanvas.style.width = pixelWidth + "px";
         newCanvas.style.height = pixelHeight + "px";
         newCanvas.width = devicePixelRatio * pixelWidth;
@@ -391,8 +391,6 @@ class ViewPort {
             this.trackView.track.draw(drawConfiguration);
         }
         if (roiFeatures) {
-            drawConfiguration.pixelHeight += 2*VISUAL_TRACK_MARGIN;
-            drawConfiguration.pixelTop -= VISUAL_TRACK_MARGIN;
             for (let r of roiFeatures) {
                 drawConfiguration.features = r.features;
                 r.track.draw(drawConfiguration);
@@ -400,7 +398,7 @@ class ViewPort {
         }
     }
 
-
+    // render viewport as SVG
     async toSVG(tile) {
 
         // Nothing to do if zoomInNotice is active
@@ -438,9 +436,9 @@ class ViewPort {
                 viewport: this,
                 context: ctx,
                 top: -$(this.contentDiv).position().top,
-                pixelTop: VISUAL_TRACK_MARGIN,   // for compatibility with canvas draw
+                pixelTop: 0,   // for compatibility with canvas draw
                 pixelWidth: pixelWidth,
-                pixelHeight: pixelHeight - 2*VISUAL_TRACK_MARGIN,
+                pixelHeight: pixelHeight ,
                 bpStart: bpStart,
                 bpEnd: bpEnd,
                 bpPerPixel: bpPerPixel,
@@ -547,8 +545,8 @@ class ViewPort {
                 referenceFrame,
                 genomicState: this.genomicState,
                 pixelWidth: width,
-                pixelTop: VISUAL_TRACK_MARGIN,
-                pixelHeight: height - 2*VISUAL_TRACK_MARGIN,
+                pixelTop: 0,
+                pixelHeight: height,
                 viewportWidth: width,
                 viewportContainerX: 0,
                 viewportContainerWidth: this.browser.viewportContainerWidth(),
@@ -596,9 +594,9 @@ class ViewPort {
                 viewport: this,
                 context,
                 top: -$(this.contentDiv).position().top,
-                pixelTop: VISUAL_TRACK_MARGIN,
+                pixelTop: 0,
                 pixelWidth: width,
-                pixelHeight: height - 2*VISUAL_TRACK_MARGIN,
+                pixelHeight: height,
                 bpStart: start,
                 bpEnd: start + (width * bpPerPixel),
                 bpPerPixel,

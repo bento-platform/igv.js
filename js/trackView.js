@@ -195,7 +195,7 @@ TrackView.prototype.appendLeftHandGutter = function ($parent) {
             $leftHandGutter.addClass('igv-clickable');
         }
 
-        $canvas = $('<canvas class ="igv-track-control-canvas">');
+        $canvas = $('<canvas class ="igv-canvas">');
         $leftHandGutter.append($canvas);
         this.controlCanvas = $canvas.get(0);
         resizeControlCanvas.call(this, $leftHandGutter.outerWidth(), $leftHandGutter.outerHeight())
@@ -240,7 +240,7 @@ function resizeControlCanvas(width, height) {
             $(this.controlCanvas).remove();
         }
 
-        var $canvas = $('<canvas class ="igv-track-control-canvas">');
+        var $canvas = $('<canvas class ="igv-canvas">');
         this.controlCanvas = $canvas[0];
         $(this.leftHandGutter).append($canvas);
 
@@ -613,10 +613,6 @@ TrackView.prototype.dispose = function () {
         this.$trackManipulationHandle.off();
     }
 
-    if (this.$innerScroll) {
-        this.$innerScroll.off();
-    }
-
     if (this.scrollbar) {
         this.scrollbar.dispose();
     }
@@ -668,8 +664,7 @@ const TrackScrollbar = function ($viewportContainer, viewports, rootDiv) {
     const namespace = '.trackscrollbar' + guid();
     this.namespace = namespace;
 
-    const $outerScroll = $('<div class="igv-scrollbar-outer-div">');
-    this.$outerScroll = $outerScroll;
+    this.$outerScroll = $('<div class="igv-scrollbar-outer-div">');
     this.$innerScroll = $('<div>');
 
     this.$outerScroll.append(this.$innerScroll);
@@ -750,6 +745,7 @@ TrackScrollbar.prototype.moveScrollerTo = function (y) {
 
 TrackScrollbar.prototype.dispose = function () {
     $(window).off(this.namespace);
+    this.$innerScroll.off();
 };
 
 TrackScrollbar.prototype.update = function () {

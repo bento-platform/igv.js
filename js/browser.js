@@ -183,6 +183,7 @@ Browser.prototype.isMultiLocusWholeGenomeView = function () {
     return false;
 };
 
+// Render browser display as SVG
 Browser.prototype.toSVG = function () {
 
     const trackContainerBBox = this.trackContainerDiv.getBoundingClientRect();
@@ -240,7 +241,7 @@ Browser.prototype.toSVG = function () {
 
 };
 
-Browser.prototype.renderSVG = function (config) {
+Browser.prototype.saveSVGtoFile = function (config) {
 
     let svg = this.toSVG();
 
@@ -441,7 +442,7 @@ Browser.prototype.loadGenome = async function (idOrConfig, initialLocus) {
 
             var reference = knownGenomes[genomeID];
             if (!reference) {
-                this.presentAlert("Uknown genome id: " + genomeID, undefined);
+                this.presentAlert("Unknown genome id: " + genomeID, undefined);
             }
             return reference;
         } else {
@@ -1390,8 +1391,10 @@ Browser.prototype.emptyViewportContainers = function () {
 
     for (let trackView of this.trackViews) {
 
-        if (trackView.$outerScroll) {
-            trackView.$outerScroll.remove();
+        if (trackView.scrollbar) {
+            trackView.scrollbar.$outerScroll.remove()
+            trackView.scrollbar = null
+            trackView.scrollbar = undefined
         }
 
         for (let viewport of trackView.viewports) {
@@ -1925,6 +1928,18 @@ Browser.prototype.sessionURL = function () {
 
     return surl;
 
+}
+
+Browser.prototype.currentLoci = function () {
+    const loci = [];
+    const anyTrackView = this.trackViews[0];
+    for(let viewport of anyTrackView.viewports) {
+        const genomicState = viewport.genomicState;
+        const pixelWidth = viewport.$viewport[0].clientWidth;
+        const locusString = genomicState.referenceFrame.showLocus(pixelWidth);
+        loci.push(locusString);
+    }
+    return loci;
 }
 
 Browser.prototype.presentAlert = function (alert) {
